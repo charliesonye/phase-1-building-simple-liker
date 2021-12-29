@@ -23,3 +23,38 @@ function mimicServerCall(url="http://mimicServer.example.com", config={}) {
     }, 300);
   });
 }
+
+
+
+let errorModal = document.querySelector('div#modal')
+errorModal.className = 'hidden'
+
+let articleHearts = document.querySelectorAll('.like-glyph')
+
+function likeCallback(e){
+  const heart = e.target
+  mimicServerCall("anyWebsite")
+.then(function(){
+if( heart.innerText === EMPTY_HEART) {
+  heart.innerText = FULL_HEART
+  heart.className = "activated-heart"
+}else{
+  heart.innerText = EMPTY_HEART
+  heart.className = ""
+};
+
+})
+
+.catch(function(error){
+delete errorModal.className
+  errorModal.innerText = error
+  setTimeout(function(){
+    errorModal.className = 'hidden'
+  },3000)
+
+})
+}
+
+for(glyph of articleHearts){
+  glyph.addEventListener('click', likeCallback)
+}
